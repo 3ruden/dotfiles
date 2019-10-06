@@ -42,6 +42,8 @@ syntax enable
 set title
 " 行番号の色
 highlight LineNr ctermfg=darkyellow
+" 気に食わない色を変更(stringi, numberなど)
+highlight Constant ctermfg=darkred
 
 
 " Tab系
@@ -75,6 +77,11 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
 "backspaceが効かない問題を解決
 set backspace=indent,eol,start
+
+" 保管候補のポップアップの色設定
+hi Pmenu ctermbg=19 ctermfg=255
+hi PmenuSel ctermbg=88 ctermfg=255
+hi PmenuSbar ctermbg=19 ctermfg=255
 
 "===========================================
 "キーマッピング
@@ -143,6 +150,101 @@ Plug 'tomtom/tcomment_vim'
 
 " 行末の半角スペースを可視化
 Plug 'bronson/vim-trailing-whitespace'
+
+" HTML閉じタグ補完
+Plug 'alvan/vim-closetag'
+""""""""""""""""""""""""""""""
+" closetag.vimの設定
+""""""""""""""""""""""""""""""
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.erb,*.php,*.vue'
+let g:closetag_xhtml_filenames = '*.xhtml,*.jsx'
+let g:closetag_filetypes = 'html,xhtml,php'
+let g:closetag_xhtml_filetypes = 'xhtml,jsx'
+
+let g:closetag_emptyTags_caseSensitive = 1
+let g:closetag_shortcut = '>'
+let g:closetag_close_shortcut = '<leader>>'
+
+"</と打ったら対応する閉じタグを自動挿入
+augroup MyXML
+  autocmd!
+  autocmd Filetype xml inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype html inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype php inoremap <buffer> </ </<C-x><C-o>
+  autocmd Filetype ruby inoremap <buffer> </ </<C-x><C-o>
+augroup END
+""""""""""""""""""""""""""""""
+
+"対応するタグをハイライト
+Plug 'Valloric/MatchTagAlways'
+""""""""""""""""""""""""""""""
+" MatchTagAlways.vimの設定
+""""""""""""""""""""""""""""""
+"オプション機能ONにする
+let g:mta_use_matchparen_group = 1
+
+"使用するファイルタイプ(phpを追加)
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'php' : 1,
+    \ 'ruby' : 1,
+    \}
+""""""""""""""""""""""""""""""
+
+" 補完プラグイン
+Plug 'Shougo/neocomplcache'
+""""""""""""""""""""""""""""""
+" neocomplcache設定
+""""""""""""""""""""""""""""""
+"辞書ファイル
+autocmd BufRead *.php\|*.ctp\|*.tpl :set dictionary=~/.vim/dictionary/php.dict filetype=php
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_smart_case = 1
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_manual_completion_start_length = 0
+let g:neocomplcache_caching_percent_in_statusline = 1
+let g:neocomplcache_enable_skip_completion = 1
+let g:neocomplcache_skip_input_time = '0.5'
+""""""""""""""""""""""""""""""
+
+" スニペット補完プラグイン
+Plug 'Shougo/neosnippet'
+" 各種スニペット
+Plug 'Shougo/neosnippet-snippets'
+""""""""""""""""""""""""""""""
+"neosnippet-snippetsの設定
+""""""""""""""""""""""""""""""
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+" <C-k>で、TARGETのところへジャンプ
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" 独自スニペットファイルのあるディレクトリを指定
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory=$HOME.'/.vim/vim-neosnippets/'
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+
+""""""""""""""""""""""""""""""
 
 call plug#end()
 """"""""""""""""""""""""""""""
