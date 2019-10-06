@@ -208,6 +208,9 @@ let g:neocomplcache_manual_completion_start_length = 0
 let g:neocomplcache_caching_percent_in_statusline = 1
 let g:neocomplcache_enable_skip_completion = 1
 let g:neocomplcache_skip_input_time = '0.5'
+
+" 補完候補が表示されている場合は確定。そうでない場合は改行
+inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "<CR>"
 """"""""""""""""""""""""""""""
 
 " スニペット補完プラグイン
