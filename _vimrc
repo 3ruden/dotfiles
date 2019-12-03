@@ -13,6 +13,8 @@ set hidden
 set showcmd
 " カーソルを行頭、行末で止まらないようにする
 set whichwrap=b,s,h,l,<,>,[,]
+" クリップボードにコピーできるようにする
+set clipboard+=unnamed
 
 " 見た目系
 " 行番号を表示
@@ -44,6 +46,8 @@ set title
 highlight LineNr ctermfg=darkyellow
 " 気に食わない色を変更(stringi, numberなど)
 highlight Constant ctermfg=darkred
+" filetype プラグインによる indent を on にする
+"filetype plugin indent on
 
 
 " Tab系
@@ -52,9 +56,9 @@ set list listchars=tab:\▸\-
 " Tab文字を半角スペースにする
 set expandtab
 " 行頭以外のTab文字の表示幅（スペースいくつ分）
-set tabstop=2
+set tabstop=4
 " 行頭でのTab文字の表示幅
-set shiftwidth=2
+set shiftwidth=4
 " 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
 set smarttab
 " コマンドラインモードで<Tab>キーによるファイル名補完を有効にする
@@ -194,20 +198,33 @@ let g:mta_filetypes = {
 
 " 補完プラグイン
 Plug 'Shougo/neocomplcache'
+Plug 'Shougo/neocomplcache-rsense.vim'
 """"""""""""""""""""""""""""""
 " neocomplcache設定
 """"""""""""""""""""""""""""""
 "辞書ファイル
 autocmd BufRead *.php\|*.ctp\|*.tpl :set dictionary=~/.vim/dictionary/php.dict filetype=php
+let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_smart_case = 1
 let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplcache_manual_completion_start_length = 0
 let g:neocomplcache_caching_percent_in_statusline = 1
 let g:neocomplcache_enable_skip_completion = 1
 let g:neocomplcache_skip_input_time = '0.5'
+"" Rsense用の設定
+if !exists('g:neocomplcache_omni_patterns')
+    let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+
+"rsenseのインストールフォルダがデフォルトと異なるので設定
+let g:rsenseHome = expand("/usr/local/lib/ruby/gems/2.6.0/gems/rsense-0.5.18/lib/rsense.rb")
+let g:rsenseUseOmniFunc = 1
 
 " 補完候補が表示されている場合は確定。そうでない場合は改行
 inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "<CR>"
@@ -244,8 +261,39 @@ let g:neosnippet#snippets_directory=$HOME.'/.vim/vim-neosnippets/'
 if has('conceal')
   set conceallevel=2 concealcursor=niv
 endif
-
 """"""""""""""""""""""""""""""
+
+" HTMLやCSSの入力を効率化
+Plug 'mattn/emmet-vim'
+""""""""""""""""""""""""""""""
+" emmet-vimの設定
+""""""""""""""""""""""""""""""
+" キーマップを<c-y>から<c-t>に変更
+let g:user_emmet_leader_key='<c-t>'
+""""""""""""""""""""""""""""""
+
+" シングルクオートとダブルクオートの入れ替え等
+Plug 'tpope/vim-surround'
+
+" css、html、でのインデントの崩れ防止
+Plug 'hail2u/vim-css3-syntax'
+Plug 'othree/html5.vim'
+
+" インデントの可視化
+Plug 'Yggdroot/indentLine'
+
+" Rails向けのコマンドを提供する
+Plug 'tpope/vim-rails'
+
+" endの自動入力
+Plug 'tpope/vim-endwise'
+""""""""""""""""""""""""""""""
+" vim-endwiseとneocomplcacheの競合の解消
+""""""""""""""""""""""""""""""
+function! s:my_crinsert()
+    return pumvisible() ? neocomplcache#close_popup() : "\<Cr>"
+endfunction
+inoremap <silent> <CR> <C-R>=<SID>my_crinsert()<CR>
 
 call plug#end()
 """"""""""""""""""""""""""""""
