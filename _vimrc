@@ -58,7 +58,7 @@ set expandtab
 " 行頭以外のTab文字の表示幅（スペースいくつ分）
 set tabstop=4
 " 行頭でのTab文字の表示幅
-set shiftwidth=4
+set shiftwidth=2
 " 行頭の余白内で Tab を打ち込むと、'shiftwidth' の数だけインデントする
 set smarttab
 " コマンドラインモードで<Tab>キーによるファイル名補完を有効にする
@@ -223,7 +223,7 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
 "rsenseのインストールフォルダがデフォルトと異なるので設定
-let g:rsenseHome = expand("/usr/local/lib/ruby/gems/2.6.0/gems/rsense-0.5.18/lib/rsense.rb")
+let g:rsenseHome = expand("/Users/mihararyosuke/.rbenv/shims/rsense")
 let g:rsenseUseOmniFunc = 1
 
 " 補完候補が表示されている場合は確定。そうでない場合は改行
@@ -270,6 +270,13 @@ Plug 'mattn/emmet-vim'
 """"""""""""""""""""""""""""""
 " キーマップを<c-y>から<c-t>に変更
 let g:user_emmet_leader_key='<c-t>'
+
+" lang属性をenからjaに変更
+let g:user_emmet_settings = {
+\ 'variables' : {
+\  'lang' : "ja"
+\ }
+\}
 """"""""""""""""""""""""""""""
 
 " シングルクオートとダブルクオートの入れ替え等
