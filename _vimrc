@@ -76,8 +76,8 @@ set incsearch
 set wrapscan
 " 検索語をハイライト表示
 set hlsearch
-" ESC連打でハイライト解除
-nmap <Esc><Esc> :nohlsearch<CR><Esc>
+" C-c連打でハイライト解除
+nmap <C-c><C-c> :nohlsearch<CR><Esc>
 
 "backspaceが効かない問題を解決
 set backspace=indent,eol,start
@@ -301,6 +301,9 @@ function! s:my_crinsert()
     return pumvisible() ? neocomplcache#close_popup() : "\<Cr>"
 endfunction
 inoremap <silent> <CR> <C-R>=<SID>my_crinsert()<CR>
+
+"JSのインデントとシンタックスカラー用プラグイン
+Plug 'pangloss/vim-javascript'
 
 call plug#end()
 """"""""""""""""""""""""""""""
