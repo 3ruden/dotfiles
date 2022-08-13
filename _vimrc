@@ -47,7 +47,7 @@ highlight LineNr ctermfg=darkyellow
 " 気に食わない色を変更(stringi, numberなど)
 highlight Constant ctermfg=darkred
 " filetype プラグインによる indent を on にする
-"filetype plugin indent on
+filetype plugin indent on
 
 
 " Tab系
@@ -108,6 +108,51 @@ inoremap { {}<Left>
 inoremap {<Enter> {}<Left><CR><ESC><S-o>
 inoremap ( ()<ESC>i
 inoremap (<Enter> ()<Left><CR><ESC><S-o>
+
+""""""""""""""""""""""""""""""
+" 挿入モード時、ステータスラインの色を変更
+""""""""""""""""""""""""""""""
+let g:hi_insert = 'highlight StatusLine guifg=darkblue guibg=darkyellow gui=none ctermfg=blue ctermbg=yellow cterm=none'
+
+if has('syntax')
+  augroup InsertHook
+    autocmd!
+    autocmd InsertEnter * call s:StatusLine('Enter')
+    autocmd InsertLeave * call s:StatusLine('Leave')
+  augroup END
+endif
+
+let s:slhlcmd = ''
+function! s:StatusLine(mode)
+  if a:mode == 'Enter'
+    silent! let s:slhlcmd = 'highlight ' . s:GetHighlight('StatusLine')
+    silent exec g:hi_insert
+  else
+    highlight clear StatusLine
+    silent exec s:slhlcmd
+  endif
+endfunction
+
+function! s:GetHighlight(hi)
+  redir => hl
+  exec 'highlight '.a:hi
+  redir END
+  let hl = substitute(hl, '[\r\n]', '', 'g')
+  let hl = substitute(hl, 'xxx', '', '')
+  return hl
+endfunction
+""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" 最後のカーソル位置を復元する
+""""""""""""""""""""""""""""""
+if has("autocmd")
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal! g'\"" |
+    \ endif
+endif
+""""""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
 " プラグインのセットアップ
@@ -304,6 +349,22 @@ inoremap <silent> <CR> <C-R>=<SID>my_crinsert()<CR>
 
 "JSのインデントとシンタックスカラー用プラグイン
 Plug 'pangloss/vim-javascript'
+
+" Rails向けのコマンドを提供する
+Plug 'tpope/vim-rails'
+
+" インデントに色を付けて見やすくする
+Plug 'nathanaelkane/vim-indent-guides'
+" vimを立ち上げたときに、自動的にvim-indent-guidesをオンにする
+let g:indent_guides_enable_on_vim_startup = 1
+
+" ログファイルを色づけしてくれる
+Plug 'vim-scripts/AnsiEsc.vim'
+
+" slimファイルをハイライトしてくれる...がplug-vimではインストールできなったので直接いれた
+Plug 'slim-template/vim-slim'
+" vim-slimのシンタックスハイライトが適用されない問題を解決
+autocmd BufNewFile,BufRead *.slim setlocal filetype=slim
 
 call plug#end()
 """"""""""""""""""""""""""""""
