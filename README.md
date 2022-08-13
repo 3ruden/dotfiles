@@ -1,0 +1,2 @@
+# dotfiles
+vimとzshを管理
