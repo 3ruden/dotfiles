@@ -190,6 +190,6 @@ case ${OSTYPE} in
         ;;
 esac
 
+# フレームワーク
 # vim:set ft=zsh:
-# フレームワークはプログラミングを本格的に仕事にすると決めてから使う
-export PATH="/usr/local/sbin:$PATH"
+
