@@ -156,6 +156,7 @@ endif
 
 """"""""""""""""""""""""""""""
 " プラグインのセットアップ
+" 使用プラグインマネージャー: https://github.com/junegunn/vim-plug
 """"""""""""""""""""""""""""""
 call plug#begin('~/.vim/plugged')
 
