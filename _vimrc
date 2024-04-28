@@ -409,4 +409,7 @@ call ddc#custom#patch_global('sourceOptions', {
  \   'forceCompletionPattern': '\S/\S*'
  \ }})
 call ddc#enable()
+" 参考:
+" https://note.com/dd_techblog/n/n97f2b6ca09d8
+" https://zenn.dev/shougo/articles/ddc-vim-beta
 """"""""""""""""""""""""""""""
