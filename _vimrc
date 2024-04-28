@@ -274,7 +274,6 @@ let g:mta_filetypes = {
 "" 補完候補が表示されている場合は確定。そうでない場合は改行
 "inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "<CR>"
 """""""""""""""""""""""""""""""
-
 " スニペット補完プラグイン
 Plug 'Shougo/neosnippet'
 " 各種スニペット
@@ -366,5 +365,48 @@ Plug 'slim-template/vim-slim'
 " vim-slimのシンタックスハイライトが適用されない問題を解決
 autocmd BufNewFile,BufRead *.slim setlocal filetype=slim
 
+" ddc.vim本体(自動補完プラグイン)
+Plug 'Shougo/ddc.vim'
+" DenoでVimプラグインを開発するためのプラグイン
+Plug 'vim-denops/denops.vim'
+" ポップアップウィンドウを表示するプラグイン
+"Plug 'Shougo/pum.vim'
+" カーソル周辺の既出単語を補完するsource
+Plug 'Shougo/ddc-around'
+" ファイル名を補完するsource
+Plug 'LumaKernel/ddc-file'
+" 入力中の単語を補完の対象にするfilter
+Plug 'Shougo/ddc-matcher_head'
+" 補完候補を適切にソートするfilter
+Plug 'Shougo/ddc-sorter_rank'
+" 補完候補の重複を防ぐためのfilter
+Plug 'Shougo/ddc-converter_remove_overlap'
+
+" プログラミング言語の文法に応じて単語の補完や文法ヒントを表示する
+"Plug 'mattn/vim-lsp-settings'
+"Plug 'prabirshrestha/vim-lsp'
+
+
 call plug#end()
+""""""""""""""""""""""""""""""
+
+" ddcの設定
+""""""""""""""""""""""""""""""
+call ddc#custom#patch_global('sources', [
+ \ 'around',
+ \ 'file'
+ \ ])
+call ddc#custom#patch_global('sourceOptions', {
+ \ '_': {
+ \   'matchers': ['matcher_head'],
+ \   'sorters': ['sorter_rank'],
+ \   'converters': ['converter_remove_overlap'],
+ \ },
+ \ 'around': {'mark': 'Around'},
+ \ 'file': {
+ \   'mark': 'file',
+ \   'isVolatile': v:true,
+ \   'forceCompletionPattern': '\S/\S*'
+ \ }})
+call ddc#enable()
 """"""""""""""""""""""""""""""
