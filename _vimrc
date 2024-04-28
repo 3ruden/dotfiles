@@ -241,40 +241,6 @@ let g:mta_filetypes = {
     \ 'ruby' : 1,
     \}
 """"""""""""""""""""""""""""""
-" エラー吐いているので、コメントアウト
-"" 補完プラグイン
-"Plug 'Shougo/neocomplcache'
-"Plug 'Shougo/neocomplcache-rsense.vim'
-"""""""""""""""""""""""""""""""
-"" neocomplcache設定
-"""""""""""""""""""""""""""""""
-""辞書ファイル
-"autocmd BufRead *.php\|*.ctp\|*.tpl :set dictionary=~/.vim/dictionary/php.dict filetype=php
-"let g:acp_enableAtStartup = 0
-"let g:neocomplcache_enable_at_startup = 1
-"let g:neocomplcache_enable_camel_case_completion = 1
-"let g:neocomplcache_enable_underbar_completion = 1
-"let g:neocomplcache_smart_case = 1
-"let g:neocomplcache_min_syntax_length = 3
-"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-"let g:neocomplcache_manual_completion_start_length = 0
-"let g:neocomplcache_caching_percent_in_statusline = 1
-"let g:neocomplcache_enable_skip_completion = 1
-"let g:neocomplcache_skip_input_time = '0.5'
-""" Rsense用の設定
-"if !exists('g:neocomplcache_omni_patterns')
-"    let g:neocomplcache_omni_patterns = {}
-"endif
-"let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-"
-""rsenseのインストールフォルダがデフォルトと異なるので設定
-"let g:rsenseHome = expand("/Users/mihararyosuke/.rbenv/shims/rsense")
-"let g:rsenseUseOmniFunc = 1
-"
-"" 補完候補が表示されている場合は確定。そうでない場合は改行
-"inoremap <expr><CR>  pumvisible() ? neocomplcache#close_popup() : "<CR>"
-"""""""""""""""""""""""""""""""
 " スニペット補完プラグイン
 Plug 'Shougo/neosnippet'
 " 各種スニペット
@@ -339,13 +305,6 @@ Plug 'tpope/vim-rails'
 
 " endの自動入力
 Plug 'tpope/vim-endwise'
-""""""""""""""""""""""""""""""
-" vim-endwiseとneocomplcacheの競合の解消
-""""""""""""""""""""""""""""""
-function! s:my_crinsert()
-    return pumvisible() ? neocomplcache#close_popup() : "\<Cr>"
-endfunction
-inoremap <silent> <CR> <C-R>=<SID>my_crinsert()<CR>
 
 "JSのインデントとシンタックスカラー用プラグイン
 Plug 'pangloss/vim-javascript'
